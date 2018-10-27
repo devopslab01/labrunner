@@ -1,0 +1,28 @@
+#!/bin/bash
+
+#--- ENV -----------------------------------------------------------------------
+SCRIPT_NAME="Install Jenkins with OpenJDK 8 (Ubuntu 18.04 LTS Bonic)"
+export DEBIAN_FRONTEND="noninteractive"
+
+
+#--- HEAD ----------------------------------------------------------------------
+echo; echo "--- $SCRIPT_NAME ---"; echo;
+
+cd /opt/runlab/
+
+#--- ACTION --------------------------------------------------------------------
+apt -y install openjdk-8-jdk
+java -version
+
+wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | apt-key add -
+sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+apt update
+apt -y install jenkins
+
+echo; echo "Admin password:"
+cat /var/lib/jenkins/secrets/initialAdminPassword
+
+echo; echo "Go to http://`hostname -s`:8080/"
+
+#--- END -----------------------------------------------------------------------
+echo; echo "Done."; echo
