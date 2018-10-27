@@ -1,0 +1,35 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+  echo "USAGE: $0 <guest>"
+  exit 1
+fi
+
+#--- ENV -----------------------------------------------------------------------
+SCRIPT_NAME="Revert Snapshot in KVM (Ubuntu 18.04 LTS Bonic)"
+export DEBIAN_FRONTEND="noninteractive"
+GUEST=$1
+
+#--- HEAD ----------------------------------------------------------------------
+echo; echo "--- $SCRIPT_NAME ---"; echo;
+echo "ACTION: $GUEST"; echo
+
+cd /opt/runlab/
+
+#--- ACTION --------------------------------------------------------------------
+echo "--> Reverting snapshot on host $GUEST ..."
+
+SNAP=`sudo virsh snapshot-list $GUEST |tail -n2 |head -n1 |awk '{print $1}'`
+if [ -n "$SNAP" ]; then
+  echo "Snapshot: $SNAP"
+  sudo virsh snapshot-revert $GUEST $SNAP
+  echo "Start $GUEST ..."
+  sudo virsh start $GUEST
+
+  echo "Snapshot reverted."
+else
+  echo "ERROR: Guest $GUEST not found!"
+fi
+
+#--- END -----------------------------------------------------------------------
+echo; echo "Done."; echo
