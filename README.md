@@ -1,2 +1,2 @@
-# labrunner
+# LabRunner
 LabRunner proj
