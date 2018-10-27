@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo; echo "--- LabRunner Environment ---"; echo
+echo "./runlab <action> <target> [argume1] [argume2] ..."; echo
+cat lab.conf
+echo
